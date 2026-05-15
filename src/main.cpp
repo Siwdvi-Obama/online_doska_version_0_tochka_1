@@ -74,8 +74,11 @@ static void AddCodepointRange(Font *font, const char *fontPath, int start, int s
 
 int main()
 {
-	if (!init_network("127.0.0.1", 12345)){
-        TraceLog(LOG_FATAL, "The server is not running, please run server.exe");
+	string ip;
+	cout << "Enter host ip:\n";
+	cin >> ip;
+	if (!init_network(ip.data(), 12345)){
+        TraceLog(LOG_FATAL, "The server is not running or the ip is incorrect, please run server.exe");
         CloseWindow();
         return 1;
     }
@@ -433,6 +436,7 @@ int main()
 						deleted[i] = true;
 					}
 				}
+				cursors.erase(user);
 				users--;
     			TraceLog(LOG_INFO, "User #%01i left", user);
     			TraceLog(LOG_INFO, "There are currently %01i users", users);
@@ -631,6 +635,7 @@ int main()
 			if (IsMouseButtonDown(0) && button_selected == -1 && !CheckCollisionPointRec(GetMousePosition(), side_bar) && !CheckCollisionPointRec(GetMousePosition(), side_bar_open)){
 				bool copied = false;
 				for (int i = draws.size() - 1; i >= 0 && !copied; i--){
+					if (deleted[i]) continue;
 					for (int j = 0; j < draws[i].size() && !copied; j++){
 						if (CheckCollisionPointCircle(GetMousePositionCam(cam), draws[i][j], draw_thicks[i] / 2)){
 							draw_color = draw_colors[i];
