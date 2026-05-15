@@ -127,7 +127,7 @@ private:
 class ChatServer {
 public:
     ChatServer(asio::io_context& io_context, short port)
-        : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)) {
+        : acceptor_(io_context, tcp::endpoint(asio::ip::make_address("0.0.0.0"), port)) {
         accept();
         std::cout << "version 0.4.1.0.0.000\n";
         std::cout << "Server running on port " << port << "\n";
